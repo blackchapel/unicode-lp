@@ -9,9 +9,7 @@ const userSchema = new mongoose.Schema({
     email: String
 });
 
-const Student = mongoose.model('Student', userSchema);
-const instructor = mongoose.model('Teacher', userSchema);
+const User = mongoose.model('User', userSchema);
 
 // Exporting the module
-module.exports = Student;
-module.exports = instructor;
+module.exports = User;
