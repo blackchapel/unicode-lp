@@ -1,5 +1,7 @@
+// importing modules
 const User = require('../models/user');
 
+// creating a new user
 exports.createUser = async (req, res) => {
     const newUser = new User(req.body);
     try {
@@ -17,9 +19,10 @@ exports.createUser = async (req, res) => {
     }
 };
 
+// deleteing a user 
 exports.deleteUser = async (req, res) => {
     try {
-        await req.User.remove({});
+        await User.deleteOne({name: req.params.name});
         res.status(201).json({
             message: "User deleted"
         });

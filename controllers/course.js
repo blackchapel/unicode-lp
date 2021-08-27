@@ -1,5 +1,7 @@
+// importing modules 
 const Course = require('../models/course');
 
+// creating a new course 
 exports.createCourse = async (req, res) => {
     const newCourse = new Course(req.body);
     try {
@@ -16,6 +18,7 @@ exports.createCourse = async (req, res) => {
     }
 };
 
+// displaying all the courses
 exports.viewCourse = async (req, res) => {
     try {
         const viewCourse = await Course.find({});
@@ -31,6 +34,7 @@ exports.viewCourse = async (req, res) => {
     }
 };
 
+// displaying courses by name 
 exports.viewCourseByName = async (req, res) => {
     try {
         const viewCourseByName = await Course.find({name: req.params.name});
@@ -46,6 +50,7 @@ exports.viewCourseByName = async (req, res) => {
     }
 };
 
+// displaying courses by instructor
 exports.viewCourseByInstructor = async (req, res) => {
     try {
         const viewCourseByInstructor = await Course.find({instructor: req.params.instructor});
@@ -61,6 +66,7 @@ exports.viewCourseByInstructor = async (req, res) => {
     }
 };
 
+// displaying courses by language
 exports.viewCourseByLanguage = async (req, res) => {
     try {
         const viewCourseByLanguage = await Course.find({language: req.params.language});
@@ -76,9 +82,10 @@ exports.viewCourseByLanguage = async (req, res) => {
     }
 };
 
+// deleting a course
 exports.deleteCourse = async (req, res) => {
     try {
-       await req.Course.remove({});
+       await Course.deleteOne({name: req.params.name});
         res.status(201).json({
             message: "Deleted course"
         });
