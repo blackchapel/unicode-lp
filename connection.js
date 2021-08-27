@@ -16,5 +16,4 @@ const connection = mongoose.connect(uri, connectionParameters)
         console.log(error);
     });
 
-// Exporting the modules
 module.exports = connection;
