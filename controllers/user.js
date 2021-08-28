@@ -19,6 +19,23 @@ exports.createUser = async (req, res) => {
     }
 };
 
+// displaying user 
+exports.viewUser = async (req, res) => {
+    try {
+        const viewUser = await User.find({name: req.params.name});
+        res.status(200).json({
+            message: "Found user",
+            data: viewUser
+        });
+    }
+    catch(error) {
+        res.status(400).json({
+            message: error,
+            data: viewUser
+        });
+    }
+};
+
 // deleteing a user 
 exports.deleteUser = async (req, res) => {
     try {
