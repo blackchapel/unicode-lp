@@ -17,7 +17,7 @@ router.post('/create', createCourse)
 router.get('/', viewCourse)
 
 // view courses by name
-router.get('/name/:name', viewCourseByName)
+router.get('/:name', viewCourseByName)
 
 // view courses by instructor
 router.get('/instructor/:instructor', viewCoursebByInstructor)
@@ -28,4 +28,5 @@ router.get('/language/:language', viewCourseByLanguage)
 // delete a course
 router.delete('/delete/:name', deleteCourse)
 
+// exporting the module
 module.exports = router;
