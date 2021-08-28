@@ -6,7 +6,9 @@ const userSchema = new mongoose.Schema({
     name: String,
     type: String,
     birthday: String,
-    email: String
+    email: String,
+    enrolledIn: [String],
+    coursesCreated: [String] 
 });
 
 const User = mongoose.model('User', userSchema);
