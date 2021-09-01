@@ -1,17 +1,35 @@
-// importing modules
+// Importing modules
 const express = require('express');
 const db = require('./connection');
+
+// Initializing an express app
+const app = express();
+
+// Importing routes
 const courseRouter = require('./routes/course');
 const userRouter = require('./routes/user');
 
-// initializing express app
-const app = express();
-
-app.use(express.urlencoded({extended: true}));
+// Routes
 app.use('/courses', courseRouter);
-app.use('/user', userRouter);
+app.use('/users', userRouter);
 
-// listening on port 3000
-app.listen(3000, () => {
-    console.log("server is running");
+// Error Handeling
+app.use((req, res, next) => {
+    const error = new Error('Not found');
+    error.status = 404;
+    next(error);
+});
+
+app.use((error, req, res, next) => {
+    res.status(error.status || 500);
+    res.json({
+        error: {
+            message: error.message
+        }
+    });
+});
+
+// Listening on port 3000
+app.listen(port, () => {
+    console.log('Server is running!')
 });
