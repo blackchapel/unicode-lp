@@ -22,10 +22,18 @@ const createCourse = async (req, res) => {
 const viewCourse = async (req, res) => {
     try {
         const course = await Course.find({});
-        res.status(201).json({
-            message: "Found course",
-            data: course
-        });
+        
+        if(course.length === 0) {
+            res.status(404).json({
+                message: "No courses available"
+            });
+        }
+        else {
+            res.status(201).json({
+                message: "Found courses",
+                data: course
+            });
+        }
     }
     catch(error) {
         res.status(400).json({
@@ -41,7 +49,7 @@ const updateCourse = async (req, res) => {
 
         if (!course) {
             res.status(404).json({
-                message: "User does not exist"
+                message: "Course does not exist"
             });
         }
         else {
@@ -62,10 +70,18 @@ const updateCourse = async (req, res) => {
 const viewCourseByName = async (req, res) => {
     try {
         const course = await Course.find({name: req.params.name});
-        res.status(201).json({
-            message: "Found course",
-            data: course
-        });
+
+        if(course.length === 0) {
+            res.status(404).json({
+                message: "No such course exists"
+            });
+        }
+        else {
+            res.status(201).json({
+                message: "Found the course",
+                data: course
+            });
+        }
     }
     catch(error) {
         res.status(400).json({
@@ -78,10 +94,18 @@ const viewCourseByName = async (req, res) => {
 const viewCourseByInstructor = async (req, res) => {
     try {
         const course = await Course.find({instructor: req.params.instructor});
-        res.status(201).json({
-            message: "Found course",
-            data: course
-        });
+
+        if(course.length === 0) {
+            res.status(404).json({
+                message: "No courses created by this intructor"
+            });
+        }
+        else {
+            res.status(201).json({
+                message: "Found courses",
+                data: course
+            });
+        }
     }
     catch(error) {
         res.status(400).json({
@@ -94,10 +118,18 @@ const viewCourseByInstructor = async (req, res) => {
 const viewCourseByLanguage = async (req, res) => {
     try {
         const course = await Course.find({language: req.params.language});
-        res.status(201).json({
-            message: "Found course",
-            data: course
-        });
+
+        if(course.length === 0) {
+            res.status(404).json({
+                message: "No courses available in this particular language"
+            });
+        }
+        else {
+            res.status(201).json({
+                message: "Found courses",
+                data: course
+            });
+        }
     }
     catch(error) {
         res.status(400).json({
@@ -109,10 +141,18 @@ const viewCourseByLanguage = async (req, res) => {
 // deleting a course
 const deleteCourse = async (req, res) => {
     try {
-       await Course.deleteOne({name: req.params.name});
-        res.status(201).json({
-            message: "Deleted course"
+       const course = await Course.findOneAndDelete({name: req.params.name});
+       if (!course) {
+        res.status(404).json({
+            message: "Course does not exist"
         });
+    }
+    else {
+        res.status(201).json({
+            message: "Course has been deleted",
+            data: course
+        });
+    }
     }
     catch(error) {
         res.status(400).json({
