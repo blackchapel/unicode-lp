@@ -22,10 +22,18 @@ const createUser = async (req, res) => {
 const viewUser = async (req, res) => {
     try {
         const user = await User.find({username: req.params.username});
-        res.status(200).json({
-            message: "Found user",
-            data: user
-        });
+
+        if(user.length === 0) {
+            res.status(404).json({
+                message: "User does not exist"
+            });
+        } 
+        else {
+            res.status(200).json({
+                message: "Found user",
+                data: user
+            });
+        }
     }
     catch(error) {
         res.status(400).json({
@@ -44,11 +52,12 @@ const updateUser = async (req, res) => {
                 message: "User not found"
             });
         }
-
+        else {
         res.status(200).json({
-            message: "Updated user details",
-            data: user
-        });
+                message: "Updated user details",
+                data: user
+            });
+        }
     }
     catch(error) {
         res.status(400).json({
@@ -60,10 +69,18 @@ const updateUser = async (req, res) => {
 // deleteing a user 
 const deleteUser = async (req, res) => {
     try {
-        await User.deleteOne({username: req.params.username});
-        res.status(201).json({
-            message: "User deleted"
-        });
+        const user = await User.findOneAndDelete({username: req.params.username});
+        
+        if (!user) {
+            res.status(404).json({
+                message: "User does not exist"
+            });
+        }
+        else {
+            res.status(201).json({
+                message: "User deleted"
+            });
+        }
     }
     catch(error){
         res.status(400).json({
