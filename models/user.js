@@ -27,10 +27,14 @@ const userSchema = new mongoose.Schema({
     userType: { type: String },
     birthday: { type: Date },
     enrolledIn: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course'
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Course',
+        default: []
     },
-    coursesCreated: { type: [String] } 
+    coursesCreated: { 
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Course'
+    } 
 });
 
 const User = mongoose.model('User', userSchema);
