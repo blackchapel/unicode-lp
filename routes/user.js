@@ -1,16 +1,21 @@
 // importing modules
 const express = require('express');
-const userController = require('../controllers/user');
+const { 
+    createUser,
+    viewUser,
+    deleteUser 
+} = require('../controllers/user');
+
 const router = new express.Router();
 
 // create new user
-router.post('/create', userController.newUser);
+router.post('/create', createUser);
 
 // displaying a user
-router.get('/:name', userController.viewUser);
+router.get('/:name', viewUser);
 
 // delete a user
-router.delete('/delete/:name', userController.deleteUser);
+router.delete('/delete/:name', deleteUser);
 
 // exporting the module
 module.exports = router;
