@@ -138,6 +138,30 @@ const viewCourseByLanguage = async (req, res) => {
     }
 };
 
+// displaying courses by type
+const viewCourseByType = async (req, res) => {
+    try {
+        const course = await Course.find({type: req.params.type});
+
+        if (course.length === 0) {
+            res.status(404).json({
+                message: "No courses available of this type"
+            });
+        }
+        else {
+            res.status(201).json({
+                message: "Found courses",
+                data: course
+            });
+        }
+    }
+    catch (error) {
+        res.status(400).json({
+            message: error.message
+        });
+    }
+};
+
 // deleting a course
 const deleteCourse = async (req, res) => {
     try {
@@ -168,5 +192,6 @@ module.exports = {
     viewCourseByName,
     viewCourseByInstructor,
     viewCourseByLanguage,
+    viewCourseByType,
     deleteCourse
 };
