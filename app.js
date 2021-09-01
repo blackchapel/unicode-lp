@@ -10,6 +10,8 @@ const app = express();
 const courseRouter = require('./routes/course');
 const userRouter = require('./routes/user');
 
+app.use(express.json());
+
 // Logging
 app.use(morgan('dev'));
 
