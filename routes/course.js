@@ -3,6 +3,7 @@ const express = require('express');
 const { 
     createCourse, 
     viewCourse,
+    updateCourse,
     viewCourseByName, 
     viewCourseByInstructor, 
     viewCourseByLanguage, 
@@ -16,6 +17,9 @@ router.post('/create', createCourse);
 
 // view all courses
 router.get('/', viewCourse);
+
+// update course details
+router.put('/update', updateCourse);
 
 // view courses by name
 router.get('/:name', viewCourseByName);
