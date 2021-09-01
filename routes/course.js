@@ -1,32 +1,25 @@
 // importing modules
 const express = require('express')
+const courseController = require('../controllers/course')
 const router = new express.Router()
-const {
-  createCourse,
-  viewCourse,
-  viewCourseByName,
-  viewCoursebByInstructor,
-  viewCourseByLanguage,
-  deleteCourse
-} = require('../controllers/course')
 
 // create new course 
-router.post('/create', createCourse)
+router.post('/create', courseController.createCourse);
 
 // view all courses
-router.get('/', viewCourse)
+router.get('/', courseController.viewCourse);
 
 // view courses by name
-router.get('/:name', viewCourseByName)
+router.get('/:name', courseController.viewCourseByName);
 
 // view courses by instructor
-router.get('/instructor/:instructor', viewCoursebByInstructor)
+router.get('/instructor/:instructor', courseController.viewCoursebByInstructor);
 
 // view courses by language 
-router.get('/language/:language', viewCourseByLanguage)
+router.get('/language/:language', courseController.viewCourseByLanguage);
 
 // delete a course
-router.delete('/delete/:name', deleteCourse)
+router.delete('/delete/:name', courseController.deleteCourse);
 
 // exporting the module
 module.exports = router;

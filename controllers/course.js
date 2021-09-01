@@ -2,7 +2,7 @@
 const Course = require('../models/course');
 
 // creating a new course 
-exports.createCourse = async (req, res) => {
+const createCourse = async (req, res) => {
     const newCourse = new Course(req.body);
     try {
         await newCourse.save();
@@ -19,7 +19,7 @@ exports.createCourse = async (req, res) => {
 };
 
 // displaying all the courses
-exports.viewCourse = async (req, res) => {
+const viewCourse = async (req, res) => {
     try {
         const viewCourse = await Course.find({});
         res.status(201).json({
@@ -35,7 +35,7 @@ exports.viewCourse = async (req, res) => {
 };
 
 // displaying courses by name 
-exports.viewCourseByName = async (req, res) => {
+const viewCourseByName = async (req, res) => {
     try {
         const viewCourseByName = await Course.find({name: req.params.name});
         res.status(201).json({
@@ -51,7 +51,7 @@ exports.viewCourseByName = async (req, res) => {
 };
 
 // displaying courses by instructor
-exports.viewCourseByInstructor = async (req, res) => {
+const viewCourseByInstructor = async (req, res) => {
     try {
         const viewCourseByInstructor = await Course.find({instructor: req.params.instructor});
         res.status(201).json({
@@ -67,7 +67,7 @@ exports.viewCourseByInstructor = async (req, res) => {
 };
 
 // displaying courses by language
-exports.viewCourseByLanguage = async (req, res) => {
+const viewCourseByLanguage = async (req, res) => {
     try {
         const viewCourseByLanguage = await Course.find({language: req.params.language});
         res.status(201).json({
@@ -83,7 +83,7 @@ exports.viewCourseByLanguage = async (req, res) => {
 };
 
 // deleting a course
-exports.deleteCourse = async (req, res) => {
+const deleteCourse = async (req, res) => {
     try {
        await Course.deleteOne({name: req.params.name});
         res.status(201).json({
@@ -95,4 +95,13 @@ exports.deleteCourse = async (req, res) => {
             message: error
         });
     }
+};
+
+module.exports = {
+    createCourse,
+    viewCourse,
+    viewCourseByName,
+    viewCourseByInstructor,
+    viewCourseByLanguage,
+    deleteCourse
 };

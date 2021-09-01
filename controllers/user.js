@@ -2,7 +2,7 @@
 const User = require('../models/user');
 
 // creating a new user
-exports.createUser = async (req, res) => {
+const createUser = async (req, res) => {
     const newUser = new User(req.body);
     try {
         await newUser.save({})
@@ -20,7 +20,7 @@ exports.createUser = async (req, res) => {
 };
 
 // displaying user 
-exports.viewUser = async (req, res) => {
+const viewUser = async (req, res) => {
     try {
         const viewUser = await User.find({name: req.params.name});
         res.status(200).json({
@@ -37,7 +37,7 @@ exports.viewUser = async (req, res) => {
 };
 
 // deleteing a user 
-exports.deleteUser = async (req, res) => {
+const deleteUser = async (req, res) => {
     try {
         await User.deleteOne({name: req.params.name});
         res.status(201).json({
@@ -49,4 +49,10 @@ exports.deleteUser = async (req, res) => {
             message: error
         });
     } 
+};
+
+module.exports = {
+    createUser,
+    viewUser,
+    deleteUser
 };
