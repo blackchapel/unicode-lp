@@ -3,12 +3,34 @@ const mongoose = require('mongoose');
 
 // Creating a schema
 const userSchema = new mongoose.Schema({
-    name: String,
-    type: String,
-    birthday: String,
-    email: String,
-    enrolledIn: [String],
-    coursesCreated: [String] 
+    name: {
+        type: String,
+        required: true
+    },
+    username: {
+        type: String,
+        required: true,
+        minlength: [4, 'Username too short'],
+        unique: true
+    },
+    email: {
+        type: String,
+        lowercase: true,
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+    },
+    password: { 
+        type: String,
+        required: true,
+        minlength: [8, 'Password too short'],
+        maxlength: [128, 'Password too long']
+    },
+    userType: { type: String },
+    birthday: { type: Date },
+    enrolledIn: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course'
+    },
+    coursesCreated: { type: [String] } 
 });
 
 const User = mongoose.model('User', userSchema);
