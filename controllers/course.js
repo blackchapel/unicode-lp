@@ -3,17 +3,17 @@ const Course = require('../models/course');
 
 // creating a new course 
 const createCourse = async (req, res) => {
-    const newCourse = new Course(req.body);
+    const course = new Course(req.body);
     try {
         await newCourse.save();
         res.status(201).json({
             message: "New course created",
-            data: newCourse
+            data: course
         });
     }
     catch(error) {
         res.status(400).json({
-            message: error
+            message: error.message
         });
     }
 };
@@ -21,15 +21,39 @@ const createCourse = async (req, res) => {
 // displaying all the courses
 const viewCourse = async (req, res) => {
     try {
-        const viewCourse = await Course.find({});
+        const course = await Course.find({});
         res.status(201).json({
             message: "Found course",
-            data: viewCourse
+            data: course
         });
     }
     catch(error) {
         res.status(400).json({
-            message: error
+            message: error.message
+        });
+    }
+};
+
+// updating course details
+const updateCourse = async (req, res) => {
+    try {
+        const course = await Course.findOneAndUpdate({name: req.params.name}, req.body, {new: true});
+
+        if (!course) {
+            res.status(404).json({
+                message: "User does not exist"
+            });
+        }
+        else {
+            res.status(201).json({
+                message: "Course details updated",
+                data: course
+            });
+        }
+    }
+    catch(error) {
+        res.status(400).json({
+            message: error.message
         });
     }
 };
@@ -37,15 +61,15 @@ const viewCourse = async (req, res) => {
 // displaying courses by name 
 const viewCourseByName = async (req, res) => {
     try {
-        const viewCourseByName = await Course.find({name: req.params.name});
+        const course = await Course.find({name: req.params.name});
         res.status(201).json({
             message: "Found course",
-            data: viewCourseByName
+            data: course
         });
     }
     catch(error) {
         res.status(400).json({
-            message: error
+            message: error.message
         });
     }
 };
@@ -53,15 +77,15 @@ const viewCourseByName = async (req, res) => {
 // displaying courses by instructor
 const viewCourseByInstructor = async (req, res) => {
     try {
-        const viewCourseByInstructor = await Course.find({instructor: req.params.instructor});
+        const course = await Course.find({instructor: req.params.instructor});
         res.status(201).json({
             message: "Found course",
-            data: viewCourseByInstructor
+            data: course
         });
     }
     catch(error) {
         res.status(400).json({
-            message: error
+            message: error.message
         });
     }
 };
@@ -69,15 +93,15 @@ const viewCourseByInstructor = async (req, res) => {
 // displaying courses by language
 const viewCourseByLanguage = async (req, res) => {
     try {
-        const viewCourseByLanguage = await Course.find({language: req.params.language});
+        const course = await Course.find({language: req.params.language});
         res.status(201).json({
             message: "Found course",
-            data: viewCourseByLanguage
+            data: course
         });
     }
     catch(error) {
         res.status(400).json({
-            message: error
+            message: error.message
         });
     }
 };
@@ -92,7 +116,7 @@ const deleteCourse = async (req, res) => {
     }
     catch(error) {
         res.status(400).json({
-            message: error
+            message: error.message
         });
     }
 };
@@ -100,6 +124,7 @@ const deleteCourse = async (req, res) => {
 module.exports = {
     createCourse,
     viewCourse,
+    updateCourse,
     viewCourseByName,
     viewCourseByInstructor,
     viewCourseByLanguage,
