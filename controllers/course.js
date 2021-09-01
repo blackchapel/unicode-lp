@@ -5,7 +5,7 @@ const Course = require('../models/course');
 const createCourse = async (req, res) => {
     const course = new Course(req.body);
     try {
-        await newCourse.save();
+        await course.save();
         res.status(201).json({
             message: "New course created",
             data: course
@@ -21,7 +21,7 @@ const createCourse = async (req, res) => {
 // displaying all the courses
 const viewCourse = async (req, res) => {
     try {
-        const course = await Course.find({});
+        const course = await Course.find({}).populate('usersEnrolled');
         
         if(course.length === 0) {
             res.status(404).json({
@@ -45,7 +45,7 @@ const viewCourse = async (req, res) => {
 // updating course details
 const updateCourse = async (req, res) => {
     try {
-        const course = await Course.findOneAndUpdate({name: req.params.name}, req.body, {new: true});
+        const course = await Course.findOneAndUpdate({name: req.params.name}, req.body, {new: true}).populate('usersEnrolled');
 
         if (!course) {
             res.status(404).json({
@@ -69,7 +69,7 @@ const updateCourse = async (req, res) => {
 // displaying courses by name 
 const viewCourseByName = async (req, res) => {
     try {
-        const course = await Course.find({name: req.params.name});
+        const course = await Course.find({name: req.params.name}).populate('usersEnrolled');
 
         if(course.length === 0) {
             res.status(404).json({
@@ -93,7 +93,7 @@ const viewCourseByName = async (req, res) => {
 // displaying courses by instructor
 const viewCourseByInstructor = async (req, res) => {
     try {
-        const course = await Course.find({instructor: req.params.instructor});
+        const course = await Course.find({instructor: req.params.instructor}).populate('usersEnrolled');
 
         if(course.length === 0) {
             res.status(404).json({
@@ -117,7 +117,7 @@ const viewCourseByInstructor = async (req, res) => {
 // displaying courses by language
 const viewCourseByLanguage = async (req, res) => {
     try {
-        const course = await Course.find({language: req.params.language});
+        const course = await Course.find({language: req.params.language}).populate('usersEnrolled');
 
         if(course.length === 0) {
             res.status(404).json({
@@ -141,7 +141,7 @@ const viewCourseByLanguage = async (req, res) => {
 // displaying courses by type
 const viewCourseByType = async (req, res) => {
     try {
-        const course = await Course.find({type: req.params.type});
+        const course = await Course.find({type: req.params.type}).populate('usersEnrolled');
 
         if (course.length === 0) {
             res.status(404).json({

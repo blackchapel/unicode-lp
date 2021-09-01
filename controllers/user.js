@@ -21,7 +21,7 @@ const createUser = async (req, res) => {
 // displaying user 
 const viewUser = async (req, res) => {
     try {
-        const user = await User.find({username: req.params.username});
+        const user = await User.find({username: req.params.username}).populate('enrolledIn', 'coursesCreated');
 
         if(user.length === 0) {
             res.status(404).json({
@@ -66,7 +66,7 @@ const updateUser = async (req, res) => {
     }
 };
 
-// deleteing a user 
+// deleting a user 
 const deleteUser = async (req, res) => {
     try {
         const user = await User.findOneAndDelete({username: req.params.username});
