@@ -1,5 +1,6 @@
 // Importing modules
 const express = require('express');
+const morgan = require('morgan');
 const db = require('./connection');
 
 // Initializing an express app
@@ -8,6 +9,9 @@ const app = express();
 // Importing routes
 const courseRouter = require('./routes/course');
 const userRouter = require('./routes/user');
+
+// Logging
+app.use(morgan('dev'));
 
 // Routes
 app.use('/courses', courseRouter);
@@ -30,6 +34,6 @@ app.use((error, req, res, next) => {
 });
 
 // Listening on port 3000
-app.listen(port, () => {
+app.listen(3000, () => {
     console.log('Server is running!')
 });
