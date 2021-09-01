@@ -7,6 +7,7 @@ const {
     viewCourseByName, 
     viewCourseByInstructor, 
     viewCourseByLanguage, 
+    viewCourseByType,
     deleteCourse
 } = require('../controllers/course');
 
@@ -29,6 +30,9 @@ router.get('/instructor/:instructor', viewCourseByInstructor);
 
 // view courses by language 
 router.get('/language/:language', viewCourseByLanguage);
+
+// view courses by type
+router.get('/type/:type', viewCourseByType);
 
 // delete a course
 router.delete('/delete/:name', deleteCourse);
