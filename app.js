@@ -10,6 +10,7 @@ const app = express();
 const courseRouter = require('./routes/course');
 const userRouter = require('./routes/user');
 
+// Formatting incoming data
 app.use(express.json());
 
 // Logging
