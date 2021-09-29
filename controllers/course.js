@@ -2,7 +2,7 @@
 const Course = require('../models/course');
 
 // creating a new course 
-const createCourse = async (req, res) => {
+const course_create = async (req, res) => {
     const course = new Course(req.body);
     try {
         await course.save();
@@ -19,7 +19,7 @@ const createCourse = async (req, res) => {
 };
 
 // displaying all the courses
-const viewCourse = async (req, res) => {
+const course_view = async (req, res) => {
     try {
         const course = await Course.find({}).populate('usersEnrolled');
         
@@ -43,7 +43,7 @@ const viewCourse = async (req, res) => {
 };
 
 // updating course details
-const updateCourse = async (req, res) => {
+const course_update = async (req, res) => {
     try {
         const course = await Course.findOneAndUpdate({name: req.params.name}, req.body, {new: true}).populate('usersEnrolled');
 
@@ -67,7 +67,7 @@ const updateCourse = async (req, res) => {
 };
 
 // displaying courses by name 
-const viewCourseByName = async (req, res) => {
+const course_viewByName = async (req, res) => {
     try {
         const course = await Course.find({name: req.params.name}).populate('usersEnrolled');
 
@@ -91,7 +91,7 @@ const viewCourseByName = async (req, res) => {
 };
 
 // displaying courses by instructor
-const viewCourseByInstructor = async (req, res) => {
+const course_viewByInstructor = async (req, res) => {
     try {
         const course = await Course.find({instructor: req.params.instructor}).populate('usersEnrolled');
 
@@ -115,7 +115,7 @@ const viewCourseByInstructor = async (req, res) => {
 };
 
 // displaying courses by language
-const viewCourseByLanguage = async (req, res) => {
+const course_viewByLanguage = async (req, res) => {
     try {
         const course = await Course.find({language: req.params.language}).populate('usersEnrolled');
 
@@ -139,7 +139,7 @@ const viewCourseByLanguage = async (req, res) => {
 };
 
 // displaying courses by type
-const viewCourseByType = async (req, res) => {
+const course_viewByType = async (req, res) => {
     try {
         const course = await Course.find({type: req.params.type}).populate('usersEnrolled');
 
@@ -163,7 +163,7 @@ const viewCourseByType = async (req, res) => {
 };
 
 // deleting a course
-const deleteCourse = async (req, res) => {
+const course_delete = async (req, res) => {
     try {
        const course = await Course.findOneAndDelete({name: req.params.name});
        if (!course) {
@@ -186,12 +186,12 @@ const deleteCourse = async (req, res) => {
 };
 
 module.exports = {
-    createCourse,
-    viewCourse,
-    updateCourse,
-    viewCourseByName,
-    viewCourseByInstructor,
-    viewCourseByLanguage,
-    viewCourseByType,
-    deleteCourse
+    course_create,
+    course_view,
+    course_update,
+    course_viewByName,
+    course_viewByInstructor,
+    course_viewByLanguage,
+    course_viewByType,
+    course_delete
 };

@@ -1,41 +1,41 @@
 // importing modules
 const express = require('express');
 const { 
-    createCourse, 
-    viewCourse,
-    updateCourse,
-    viewCourseByName, 
-    viewCourseByInstructor, 
-    viewCourseByLanguage, 
-    viewCourseByType,
-    deleteCourse
+    course_create,
+    course_view,
+    course_update,
+    course_viewByName,
+    course_viewByInstructor,
+    course_viewByLanguage,
+    course_viewByType,
+    course_delete
 } = require('../controllers/course');
 
 const router = new express.Router();
 
 // create new course 
-router.post('/create', createCourse);
+router.post('/create', course_create);
 
 // view all courses
-router.get('/', viewCourse);
+router.get('/view', course_view);
 
 // update course details
-router.put('/update', updateCourse);
+router.put('/update', course_update);
 
 // view courses by name
-router.get('/:name', viewCourseByName);
+router.get('/view/name/:name', course_viewByName);
 
 // view courses by instructor
-router.get('/instructor/:instructor', viewCourseByInstructor);
+router.get('/view/instructor/:instructor',course_viewByInstructor);
 
 // view courses by language 
-router.get('/language/:language', viewCourseByLanguage);
+router.get('/view/language/:language', course_viewByLanguage);
 
 // view courses by type
-router.get('/type/:type', viewCourseByType);
+router.get('/view/type/:type', course_viewByType);
 
 // delete a course
-router.delete('/delete/:name', deleteCourse);
+router.delete('/delete/:name', course_delete);
 
 // exporting the module
 module.exports = router;

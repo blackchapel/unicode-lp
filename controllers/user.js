@@ -2,7 +2,7 @@
 const User = require('../models/user');
 
 // creating a new user
-const createUser = async (req, res) => {
+const user_create = async (req, res) => {
     const newUser = new User(req.body);
     try {
         await newUser.save();
@@ -19,7 +19,7 @@ const createUser = async (req, res) => {
 };
 
 // displaying user 
-const viewUser = async (req, res) => {
+const user_view = async (req, res) => {
     try {
         const user = await User.find({username: req.params.username}).populate('enrolledIn', 'coursesCreated');
 
@@ -43,7 +43,7 @@ const viewUser = async (req, res) => {
 };
 
 // updating user
-const updateUser = async (req, res) => {
+const user_update = async (req, res) => {
     try {
         const user = await User.findOneAndUpdate({username: req.params.username}, req.body, {new: true});
 
@@ -67,7 +67,7 @@ const updateUser = async (req, res) => {
 };
 
 // deleting a user 
-const deleteUser = async (req, res) => {
+const user_delete = async (req, res) => {
     try {
         const user = await User.findOneAndDelete({username: req.params.username});
         
@@ -90,8 +90,8 @@ const deleteUser = async (req, res) => {
 };
 
 module.exports = {
-    createUser,
-    viewUser,
-    updateUser,
-    deleteUser
+    user_create,
+    user_view,
+    user_update,
+    user_delete
 };

@@ -17,8 +17,8 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 // Routes
-app.use('/courses', courseRouter);
-app.use('/users', userRouter);
+app.use('/course', courseRouter);
+app.use('/user', userRouter);
 
 // Error Handeling
 app.use((req, res, next) => {
