@@ -18,6 +18,15 @@ const user_create = async (req, res) => {
     }
 };
 
+const user_login = async (req, res) => {
+    try {
+        const user = await User.findByCredentials(req.body.email, req.body.password);
+        res.send(user); 
+    } catch (error) {
+        res.status(400).send();
+    }
+}
+
 // displaying user 
 const user_view = async (req, res) => {
     try {
@@ -91,6 +100,7 @@ const user_delete = async (req, res) => {
 
 module.exports = {
     user_create,
+    user_login,
     user_view,
     user_update,
     user_delete
