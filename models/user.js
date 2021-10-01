@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const Course = require ('../models/course')
 
 // Creating a schema
 const userSchema = new mongoose.Schema({
@@ -105,6 +106,14 @@ userSchema.pre('save',async function (next) {
 
     next();
 })
+
+// Delete course if instructors account is deleted
+userSchema.pre('remove', async function (next) {
+    const user = this;
+    await Course.deleteMany({instructor: user._id});
+
+    next();
+}) 
 
 const User = mongoose.model('User', userSchema);
 
