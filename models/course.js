@@ -10,8 +10,9 @@ const courseSchema = new mongoose.Schema({
         unique: true
     },
     instructor: { 
-        type: String,
-        required: true 
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
     },
     language: {
         type: String,

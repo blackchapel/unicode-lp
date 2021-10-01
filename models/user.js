@@ -1,6 +1,7 @@
 // Importing the module
 const mongoose = require('mongoose');
 const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // Creating a schema
 const userSchema = new mongoose.Schema({
@@ -40,9 +41,44 @@ const userSchema = new mongoose.Schema({
     coursesCreated: { 
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Course'
-    } 
+    },
+    tokens: [{
+        token: {
+            type: String, 
+            required: true
+        }
+    }]
 });
 
+userSchema.virtual('courses', {
+    ref: 'Course',
+    localField: '_id',
+    foreignField: 'instructor'
+});
+
+// Removing sensitive data from Public Profile
+userSchema.methods.toJSON = function () {
+    const user = this;
+    const userObject = user.toObject();
+
+    delete userObject.password;
+    delete userObject.tokens;
+
+    return userObject;
+}
+
+// Generating authentication tokens
+userSchema.methods.generateAuthToken = async function () {
+    const user = this;
+    const token = jwt.sign({ _id: user._id.toString()}, 'youcantseeme');
+
+    user.tokens = user.tokens.concat({ token });
+    await user.save();
+
+    return token;
+}
+
+// Checking credentials to login
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email });
 

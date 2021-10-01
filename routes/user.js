@@ -1,8 +1,11 @@
 // importing modules
 const express = require('express');
+const auth = require('../middleware/auth');
 const { 
     user_create,
     user_login,
+    user_logout,
+    user_logoutAll,
     user_view,
     user_update,
     user_delete
@@ -13,16 +16,23 @@ const router = new express.Router();
 // create new user
 router.post('/create', user_create);
 
+// user login
 router.post('/login', user_login);
 
+// user logout
+router.post('/logout', auth, user_logout);
+
+// user logout from all active sessions
+router.post('/logoutAll', auth, user_logoutAll);
+
 // displaying a user
-router.get('/view/:username', user_view);
+router.get('/view/me', auth, user_view);
 
 // updating user details
-router.put('/update/:username', user_update);
+router.put('/update/me', auth, user_update);
 
 // delete a user
-router.delete('/delete/:username', user_delete);
+router.delete('/delete/me', auth, user_delete);
 
 // exporting the module
 module.exports = router;
