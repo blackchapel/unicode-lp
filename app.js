@@ -6,12 +6,14 @@ const db = require('./connection');
 // Initializing an express app
 const app = express();
 
+
 // Importing routes
 const courseRouter = require('./routes/course');
 const userRouter = require('./routes/user');
 
 // Formatting incoming data
 app.use(express.json());
+app.use('/uploads', express.static('./public'));
 
 // Logging
 app.use(morgan('dev'));

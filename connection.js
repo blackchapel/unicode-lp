@@ -8,7 +8,7 @@ const connectionParameters = {
 };
 
 // Connecting to the database
-const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.jpcvy.mongodb.net/LearningPortal?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://user-ojasy:goaldiggers2020@cluster0.btfod.mongodb.net/UnicodeTask5?retryWrites=true&w=majority`;
 const connection = mongoose.connect(uri, connectionParameters)
     .then(() => {
         console.log("Connected to database");

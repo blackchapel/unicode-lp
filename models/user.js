@@ -18,6 +18,13 @@ const userSchema = new mongoose.Schema({
         minlength: [4, 'Username too short'],
         unique: true
     },
+    profile: {
+        type: String,
+       // trim: true,
+        //required: true,
+        //minlength: [4, 'Username too short'],
+        //unique: true
+    },
     email: {
         type: String,
         required: true,
