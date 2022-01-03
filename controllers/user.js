@@ -6,7 +6,7 @@ const user_create = async (req, res) => {
     const newUser = new User(req.body);
     try {
         await newUser.save();
-        const token = await user.generateAuthToken();
+        const token = await User.generateAuthToken(newUser._id);
         res.status(201).json({
             message: "User created",
             data: newUser
@@ -22,7 +22,7 @@ const user_create = async (req, res) => {
 const user_login = async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password);
-        const token = await user.generateAuthToken();
+        const token = await User.generateAuthToken(user._id);
         res.send({ user, token }); 
     } catch (error) {
         res.status(400).send();

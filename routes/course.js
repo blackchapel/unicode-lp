@@ -16,19 +16,19 @@ const {
 const router = new express.Router();
 
 // create new course 
-router.post('/create', course_create);
+router.post('/create', [auth.verifyjwt, auth.user_type],course_create);
 
 // view a course by id
 router.get('/view/:id', course_viewById);
 
 // view a course by id
-router.get('/view/me', auth, course_viewEnrolled);
+router.get('/view/me', auth.verifyjwt, course_viewEnrolled);
 
 // view a course by id
 router.get('/view/all', course_viewAll);
 
 // update course details
-router.put('/update', course_update);
+router.put('/update', [auth.verifyjwt, auth.user_type],course_update);
 
 // // view courses by instructor
 // router.get('/view/instructor/:instructor',course_viewByInstructor);
@@ -40,7 +40,7 @@ router.put('/update', course_update);
 // router.get('/view/type/:type', course_viewByType);
 
 // delete a course
-router.delete('/delete/:id', auth, course_delete);
+router.delete('/delete/:id', [auth.verifyjwt, auth.user_type], course_delete);
 
 // exporting the module
 module.exports = router;

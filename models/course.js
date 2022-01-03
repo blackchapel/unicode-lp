@@ -24,8 +24,7 @@ const courseSchema = new mongoose.Schema({
     },
     rating: { type: String }, 
     dateAdded: {
-        type: Date,
-        required: true
+        type: Date
     }, 
     usersEnrolled: {
         type: [mongoose.Schema.Types.ObjectId],

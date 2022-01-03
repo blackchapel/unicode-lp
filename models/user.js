@@ -1,8 +1,9 @@
 // Importing the module
 const mongoose = require('mongoose');
+const Course = require ('../models/course');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const Course = require ('../models/course')
+const dotenv = require('dotenv').config();
 
 // Creating a schema
 const userSchema = new mongoose.Schema({
@@ -39,7 +40,10 @@ const userSchema = new mongoose.Schema({
         minlength: [8, 'Password too short'],
         maxlength: [128, 'Password too long']
     },
-    userType: { type: [String] },
+    userType: { 
+        type: String,
+        enum: ["STUDENT", "INSTRUCTOR"]
+    },
     birthday: { type: Date },
     enrolledIn: {
         type: [mongoose.Schema.Types.ObjectId],
@@ -76,9 +80,9 @@ userSchema.methods.toJSON = function () {
 }
 
 // Generating authentication tokens
-userSchema.methods.generateAuthToken = async function () {
-    const user = this;
-    const token = jwt.sign({ _id: user._id.toString()}, 'youcantseeme');
+userSchema.statics.generateAuthToken = async (userid) => {
+    const user = await User.findById(userid);
+    const token = jwt.sign({ _id: user._id.toString()}, process.env.KEY);
 
     user.tokens = user.tokens.concat({ token });
     await user.save();

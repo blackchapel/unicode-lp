@@ -50,19 +50,19 @@ router.post('/create', upload.single('image'), user_create);
 router.post('/login', user_login);
 
 // user logout
-router.post('/logout', auth, user_logout);
+router.post('/logout', user_logout);
 
 // user logout from all active sessions
-router.post('/logoutAll', auth, user_logoutAll);
+router.post('/logoutAll', auth.verifyjwt, user_logoutAll);
 
 // displaying a user
-router.get('/view/me', auth, user_view);
+router.get('/view/me', auth.verifyjwt, user_view);
 
 // updating user details
-router.put('/update/me', auth, user_update);
+router.put('/update/me', auth.verifyjwt, user_update);
 
 // delete a user
-router.delete('/delete/me', auth, user_delete);
+router.delete('/delete/me', auth.verifyjwt, user_delete);
 
 // exporting the module
 module.exports = router;

@@ -8,8 +8,7 @@ const connectionParameters = {
 };
 
 // Connecting to the database
-const uri = `mongodb+srv://user-ojasy:goaldiggers2020@cluster0.btfod.mongodb.net/UnicodeTask5?retryWrites=true&w=majority`;
-const connection = mongoose.connect(uri, connectionParameters)
+const connection = mongoose.connect(process.env.MONGODB_URI, connectionParameters)
     .then(() => {
         console.log("Connected to database");
     })
