@@ -6,7 +6,6 @@ const db = require('./connection');
 // Initializing an express app
 const app = express();
 
-
 // Importing routes
 const courseRouter = require('./routes/course');
 const userRouter = require('./routes/user');
@@ -39,6 +38,8 @@ app.use((error, req, res, next) => {
 });
 
 // Listening on port 3000
-app.listen(3000, () => {
-    console.log('Server is running!')
+const server = app.listen(3000, () => {
+    console.log('Server is running');
 });
+
+module.exports = server;
