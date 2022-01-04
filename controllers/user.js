@@ -1,5 +1,6 @@
 // importing modules
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
 
 // creating a new user
 const user_create = async (req, res) => {
@@ -23,36 +24,63 @@ const user_login = async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password);
         const token = await User.generateAuthToken(user._id);
-        res.send({ user, token }); 
+
+        res.status(200).json({ 
+            user,
+            token
+        }); 
     } catch (error) {
-        res.status(400).send();
+        res.status(400).json({
+            message: error.message
+        });
     }
 }
 
 // logging the user out
+
 const user_logout = async (req, res) => {
     try {
-        req.user.tokens = req.user.tokens.filter((token) => {
-            return token.token !== req.token;
-        })
+        const token = req.header('Authorization').replace('Bearer ', '');
+        const decoded = jwt.verify(token, process.env.KEY);
+        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
 
-        await req.user.save();
-        res.send();
-    } catch (error) {
-        res.status(500).send();
+        user.tokens = user.tokens.filter((usertoken) => {
+            return usertoken.token !== token;
+        });
+
+        await user.save();
+
+        res.status(200).json({
+            message: 'Logged Out Successfully'
+        });
     }
-}
+    catch (error) {
+        res.status(400).json({
+            message: error.message
+        });
+    }
+};
 
 // logging out of all sessions
 const user_logoutAll = async (req, res) => {
     try {
-        req.user.tokens = [];
-        await req.user.save();
-        res.send()
-    } catch (error) {
-        res.staatus(500).send();
+        const token = req.header('Authorization').replace('Bearer ', '');
+        const decoded = jwt.verify(token, process.env.KEY);
+        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
+
+        user.tokens = [];
+        await user.save();
+
+        res.status(200).json({
+            message: 'Successfully logged out of all sessions!'
+        });
     }
-}
+    catch (error) {
+        res.status(400).json({
+            message: error.message
+        });
+    }
+};
 
 // displaying user 
 const user_view = async (req, res) => {
@@ -61,20 +89,31 @@ const user_view = async (req, res) => {
 
 // updating user
 const user_update = async (req, res) => {
-    const updates = object.keys(req.body);
-    const allowedUpdates = ['name', 'username', 'email', 'password', 'userType', 'birthday', 'enrolledIn', 'coursesCreated'];
-    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
-
     try {
-        updates.forEach((update) => req.user[update] = req.body[update]);
-        await req.user.save();
+        const token = req.header('Authorization').replace('Bearer ', '');
+        const decoded = jwt.verify(token, process.env.KEY);
+        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
+
+        const updates = Object.keys(req.body);
+        const allowedUpdates = ['name', 'username', 'email', 'password', 'userType', 'birthday', 'enrolledIn', 'coursesCreated'];
+        const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+
+        if (!isValidOperation) {
+            res.status(400).json({
+                message: 'Invalid'
+            });
+        }
+
+        updates.forEach((update) => user[update] = req.body[update]);
+        await user.save();
+
         res.status(200).json({
             message: "Updated user details",
-            data: req.user
+            data: user
         });
     } catch(error) {
         res.status(400).json({
-            message: error
+            message: error.message
         });
     }
 };
@@ -82,8 +121,15 @@ const user_update = async (req, res) => {
 // deleting a user 
 const user_delete = async (req, res) => {
     try {
-        await req.user.remove();
-        res.send(req.user);
+        const token = req.header('Authorization').replace('Bearer ', '');
+        const decoded = jwt.verify(token, process.env.KEY);
+        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
+
+        await user.remove();
+
+        res.status(200).json({
+            message: "User deleted"
+        });
     } catch(error){
         res.status(400).json({
             message: error
