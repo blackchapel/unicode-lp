@@ -13,7 +13,6 @@ const course_id = new mongoose.Types.ObjectId();
 const userOne = {
     _id: user_id,
     name: 'Yash B.',
-    username: 'bbchotu',
     email: 'bb@gmail.com',
     password: 'youcantseeme',
     userType: 'INSTRUCTOR',

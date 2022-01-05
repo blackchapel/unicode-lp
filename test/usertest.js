@@ -1,7 +1,7 @@
 // Importing modules
 const chai = require('chai');
 const chaihttp = require('chai-http');
-const { userOne, courseOne, databaseReq } = require('./fixtures/database.js');
+const { userOne, databaseReq } = require('./fixtures/database.js');
 const app = require('../app.js');
 
 // Requiring should style of chai js
@@ -13,11 +13,10 @@ beforeEach(databaseReq);
 
 let usertokens = userOne.tokens;
 
-describe('Create User', () => {
+describe('User Create', () => {
     it('should create a new user', (done) => {
         let user = {
             name: 'Valteri Bottas',
-            username: 'batata',
             email: 'batata@gmail.com',
             password: 'iamnotspeed',
             userType: 'INSTRUCTOR'
@@ -30,6 +29,37 @@ describe('Create User', () => {
                 res.should.have.status(201);
                 res.body.should.be.a('object');
                 res.body.should.have.property('message');
+                res.body.should.have.property('data');
+                done();
+            });
+    });
+});
+
+describe('View User', () => {
+    it('should return user details', (done) => {
+        chai
+            .request(app)
+            .get('/user/view/me')
+            .set('Authorization', `Bearer ${usertokens[0].token}`)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have.property('data');
+                done();
+            });
+    });
+});
+
+describe('User Profile Picture', () => {
+    it('should upload profile picture', (done) => {
+        chai
+            .request(app)
+            .get('/user/view/me')
+            .set('Authorization', `Bearer ${usertokens[0].token}`)
+            .attach('image', ('/home/kc/Pictures/Screenshot-20220105130631-1387x1031.png'))
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
                 res.body.should.have.property('data');
                 done();
             });

@@ -106,7 +106,19 @@ const user_logoutAll = async (req, res) => {
 
 // displaying user 
 const user_view = async (req, res) => {
-    req.send(req.user);
+    try {
+        const token = req.header('Authorization').replace('Bearer ', '');
+        const decoded = jwt.verify(token, process.env.KEY);
+        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
+
+        res.status(200).json({
+            data: user
+        });
+    } catch (error) {
+        res.status(400).json({
+            message:error.message
+        });
+    }
 };
 
 // updating user

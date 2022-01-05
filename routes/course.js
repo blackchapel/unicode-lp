@@ -22,13 +22,13 @@ const {
 const router = new express.Router();
 
 // create new course 
-router.post('/create', [auth.verifyjwt, auth.user_type],course_create);
+router.post('/create', [auth.verifyjwt, auth.user_type], course_create);
 
 // upload document
-router.post('/upload/document', [auth.verifyjwt, auth.user_type], upload_file('document'), course_document);
+router.post('/upload/document', [auth.verifyjwt, auth.user_type], upload_file.single('document'), course_document);
 
 // upload video
-router.post('/upload/video', [auth.verifyjwt, auth.user_type], upload_file('video'), course_video);
+router.post('/upload/video', [auth.verifyjwt, auth.user_type], upload_video.single('video'), course_video);
 
 // view a course by id
 router.get('/view/:id', course_viewById);
