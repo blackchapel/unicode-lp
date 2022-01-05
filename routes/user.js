@@ -1,8 +1,10 @@
 // importing modules
 const express = require('express');
 const auth = require('../middleware/auth');
+const upload = require('../utility/upload/user.js');
 const { 
     user_create,
+    user_profilePicture,
     user_login,
     user_logout,
     user_logoutAll,
@@ -14,7 +16,10 @@ const {
 const router = new express.Router();
 
 // create new user
-router.post('/create', upload.single('image'), user_create);
+router.post('/create', user_create);
+
+// profile picture upload
+router.post('/upload/profilepicture', upload.single('image'), user_profilePicture);
 
 // user login
 router.post('/login', user_login);

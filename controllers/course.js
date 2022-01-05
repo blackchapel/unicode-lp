@@ -17,6 +17,32 @@ const course_create = async (req, res) => {
     }
 };
 
+// upload course documents
+const course_document = async (req, res) => {
+    try {
+        res.status(201).json({
+            message: 'Document uploaded'
+        });
+    } catch (error) {
+        res.status(400).json({
+            message: error.message
+        });
+    }
+};
+
+// upload course videos
+const course_video = async (req, res) => {
+    try {
+        res.status(201).json({
+            message: 'Video uploaded'
+        });
+    } catch (error) {
+        res.status(400).json({
+            message: error.message
+        });
+    }
+};
+
 // displaying course by id  
 const course_viewById = async (req, res) => {
     try {
@@ -190,6 +216,8 @@ const course_delete = async (req, res) => {
 
 module.exports = {
     course_create,
+    course_document,
+    course_video,
     course_viewById,
     course_viewEnrolled,
     course_viewAll,

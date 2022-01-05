@@ -12,20 +12,6 @@ const userSchema = new mongoose.Schema({
         trim: true,
         required: true
     },
-    username: {
-        type: String,
-        trim: true,
-        required: true,
-        minlength: [4, 'Username too short'],
-        unique: true
-    },
-    profile: {
-        type: String,
-       // trim: true,
-        //required: true,
-        //minlength: [4, 'Username too short'],
-        //unique: true
-    },
     email: {
         type: String,
         required: true,
@@ -39,6 +25,9 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: [8, 'Password too short'],
         maxlength: [128, 'Password too long']
+    },
+    profilePicture: {
+        type: String
     },
     userType: { 
         type: String,

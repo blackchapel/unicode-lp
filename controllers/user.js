@@ -1,6 +1,7 @@
 // importing modules
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const sharp = require('sharp');
 
 // creating a new user
 const user_create = async (req, res) => {
@@ -13,6 +14,28 @@ const user_create = async (req, res) => {
             data: newUser
         });
     } catch(error) {
+        res.status(400).json({
+            message: error.message
+        });
+    }
+};
+
+// profile picture upload
+const user_profilePicture = async (req, res) => {
+    try {
+        const token = req.header('Authorization').replace('Bearer ', '');
+        const decoded = jwt.verify(token, process.env.KEY);
+        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
+
+        const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer();
+        
+        user.profilePicture = buffer;
+        await user.save();
+
+        res.status(201).json({
+            message: 'Pofile picture uploaded'
+        });
+    } catch (error) {
         res.status(400).json({
             message: error.message
         });
@@ -37,7 +60,6 @@ const user_login = async (req, res) => {
 }
 
 // logging the user out
-
 const user_logout = async (req, res) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
@@ -139,6 +161,7 @@ const user_delete = async (req, res) => {
 
 module.exports = {
     user_create,
+    user_profilePicture,
     user_login,
     user_logout,
     user_logoutAll,

@@ -1,8 +1,14 @@
 // importing modules
 const express = require('express');
 const auth = require('../middleware/auth');
+const {
+    upload_file,
+    upload_video
+} = require('../utility/upload/course');
 const { 
     course_create,
+    course_document,
+    course_video,
     course_viewById,
     course_viewEnrolled,
     course_viewAll,
@@ -17,6 +23,12 @@ const router = new express.Router();
 
 // create new course 
 router.post('/create', [auth.verifyjwt, auth.user_type],course_create);
+
+// upload document
+router.post('/upload/document', [auth.verifyjwt, auth.user_type], upload_file('document'), course_document);
+
+// upload video
+router.post('/upload/video', [auth.verifyjwt, auth.user_type], upload_file('video'), course_video);
 
 // view a course by id
 router.get('/view/:id', course_viewById);
