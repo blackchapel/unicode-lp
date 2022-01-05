@@ -40,7 +40,7 @@ router.get('/view/me', auth.verifyjwt, course_viewEnrolled);
 router.get('/view/all', course_viewAll);
 
 // update course details
-router.put('/update', [auth.verifyjwt, auth.user_type],course_update);
+router.put('/update/:id', [auth.verifyjwt, auth.user_type],course_update);
 
 // // view courses by instructor
 // router.get('/view/instructor/:instructor',course_viewByInstructor);

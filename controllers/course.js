@@ -102,7 +102,7 @@ const course_viewAll = async (req, res) => {
 // updating course details
 const course_update = async (req, res) => {
     try {
-        const course = await Course.findOneAndUpdate({name: req.params.name}, req.body, {new: true}).populate('usersEnrolled');
+        const course = await Course.findByIdAndUpdate(req.params.id, req.body, {new: true}).populate('usersEnrolled');
 
         if (!course) {
             res.status(404).json({
@@ -196,13 +196,13 @@ const course_update = async (req, res) => {
 // deleting a course
 const course_delete = async (req, res) => {
     try {
-       const course = await Course.findOneAndDelete({_id: req.params.id, intructor: req.user._id});
+       const course = await Course.findByIdAndDelete(req.params.id);
        if (!course) {
            res.status(404).json({
                message: "Course does not exist"
             });
         } else {
-            res.status(201).json({
+            res.status(200).json({
                 message: "Course has been deleted",
                 data: course
             });
