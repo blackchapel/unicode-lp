@@ -10,7 +10,7 @@ const {
     course_document,
     course_video,
     course_viewById,
-    course_viewEnrolled,
+    // course_viewEnrolled,
     course_viewAll,
     course_update,
     // course_viewByInstructor,
@@ -33,11 +33,11 @@ router.post('/upload/video', [auth.verifyjwt, auth.user_type], upload_video.sing
 // view a course by id
 router.get('/view/:id', course_viewById);
 
-// view a course by id
-router.get('/view/me', auth.verifyjwt, course_viewEnrolled);
+// view all courses that a user has enrolled in 
+// router.get('/view/me', auth.verifyjwt, course_viewEnrolled);
 
-// view a course by id
-router.get('/view/all', course_viewAll);
+// view all course
+router.get('/viewall', course_viewAll);
 
 // update course details
 router.put('/update/:id', [auth.verifyjwt, auth.user_type],course_update);

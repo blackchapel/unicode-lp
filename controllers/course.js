@@ -53,7 +53,7 @@ const course_viewById = async (req, res) => {
                 message: "No such course exists"
             });
         } else {
-            res.status(201).json({
+            res.status(200).json({
                 message: "Found the course",
                 data: course
             });
@@ -66,28 +66,27 @@ const course_viewById = async (req, res) => {
 };
 
 // displaying all the courses the user has enrolled in
-const course_viewEnrolled = async (req, res) => {
-    try {
-        await req.user.populate('courses').execPopulate();
-        res.send(req.user.courses)
-    } catch(error) {
-        res.status(400).json({
-            message: error.message
-        });
-    }
-};
+// const course_viewEnrolled = async (req, res) => {
+//     try {
+//         await req.user.populate('courses').execPopulate();
+//         res.send(req.user.courses)
+//     } catch(error) {
+//         res.status(400).json({
+//             message: error.message
+//         });
+//     }
+// };
 
 // displaying all the courses
 const course_viewAll = async (req, res) => {
     try {
         const course = await Course.find({}).populate('usersEnrolled');
-        
         if(course.length === 0) {
             res.status(404).json({
                 message: "No courses available"
             });
         } else {
-            res.status(201).json({
+            res.status(200).json({
                 message: "Found courses",
                 data: course
             });
@@ -219,7 +218,7 @@ module.exports = {
     course_document,
     course_video,
     course_viewById,
-    course_viewEnrolled,
+    // course_viewEnrolled,
     course_viewAll,
     course_update,
     // course_viewByName,
