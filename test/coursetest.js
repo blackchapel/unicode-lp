@@ -51,6 +51,21 @@ describe('Course View', () => {
     });
 });
 
+describe('Course View Enrolled', () => {
+    it('should display all the courses a user is enrolled in', (done) => {
+      chai
+        .request(app)
+        .get('/course/viewenrolled')
+        .set('Authorization', `Bearer ${usertokens[0].token}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property('message');
+          res.body.should.have.property('data');
+          done();
+        })
+    })
+  })
+
 describe('Course View All', () => {
     it('should display all the courses in the database', (done) => {
         chai 
