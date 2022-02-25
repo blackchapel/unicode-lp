@@ -23,14 +23,12 @@ const user_create = async (req, res) => {
 // profile picture upload
 const user_profilePicture = async (req, res) => {
     try {
-        const token = req.header('Authorization').replace('Bearer ', '');
-        const decoded = jwt.verify(token, process.env.KEY);
-        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
+        const currentUSer = req.user;
 
         const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer();
         
-        user.profilePicture = buffer;
-        await user.save();
+        currentUser.profilePicture = buffer;
+        await currentUser.save();
 
         res.status(201).json({
             message: 'Pofile picture uploaded'
@@ -62,15 +60,14 @@ const user_login = async (req, res) => {
 // logging the user out
 const user_logout = async (req, res) => {
     try {
-        const token = req.header('Authorization').replace('Bearer ', '');
-        const decoded = jwt.verify(token, process.env.KEY);
-        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
+        const token = req.token;
+        const currentUser = req.user;
 
-        user.tokens = user.tokens.filter((usertoken) => {
+        currentUser.tokens = currentUser.tokens.filter((usertoken) => {
             return usertoken.token !== token;
         });
 
-        await user.save();
+        await currentUser.save();
 
         res.status(200).json({
             message: 'Logged Out Successfully'
@@ -86,12 +83,10 @@ const user_logout = async (req, res) => {
 // logging out of all sessions
 const user_logoutAll = async (req, res) => {
     try {
-        const token = req.header('Authorization').replace('Bearer ', '');
-        const decoded = jwt.verify(token, process.env.KEY);
-        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
+        const currentUser = req.user;
 
-        user.tokens = [];
-        await user.save();
+        currentUser.tokens = [];
+        await currentUser.save();
 
         res.status(200).json({
             message: 'Successfully logged out of all sessions!'
@@ -107,12 +102,10 @@ const user_logoutAll = async (req, res) => {
 // displaying user 
 const user_view = async (req, res) => {
     try {
-        const token = req.header('Authorization').replace('Bearer ', '');
-        const decoded = jwt.verify(token, process.env.KEY);
-        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
+        const currentUser = req.user;
 
         res.status(200).json({
-            data: user
+            data: currentUser
         });
     } catch (error) {
         res.status(400).json({
@@ -124,9 +117,7 @@ const user_view = async (req, res) => {
 // updating user
 const user_update = async (req, res) => {
     try {
-        const token = req.header('Authorization').replace('Bearer ', '');
-        const decoded = jwt.verify(token, process.env.KEY);
-        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
+        const currentUser = req.user; 
 
         const updates = Object.keys(req.body);
         const allowedUpdates = ['name', 'username', 'email', 'password', 'userType', 'birthday', 'enrolledIn', 'coursesCreated'];
@@ -139,7 +130,7 @@ const user_update = async (req, res) => {
         }
 
         updates.forEach((update) => user[update] = req.body[update]);
-        await user.save();
+        await currentUser.save();
 
         res.status(200).json({
             message: "Updated user details",
@@ -155,11 +146,9 @@ const user_update = async (req, res) => {
 // deleting a user 
 const user_delete = async (req, res) => {
     try {
-        const token = req.header('Authorization').replace('Bearer ', '');
-        const decoded = jwt.verify(token, process.env.KEY);
-        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
+        const currentUser = req.user;
 
-        await user.remove();
+        await currentUser.remove();
 
         res.status(200).json({
             message: "User deleted"

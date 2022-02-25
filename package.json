@@ -18,7 +18,8 @@
     "mocha": "^9.1.3",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15",
-    "nyc": "^15.1.0"
+    "nyc": "^15.1.0",
+    "sinon": "^12.0.1"
   },
   "scripts": {
     "test": "nyc mocha --timeout 10000",

@@ -15,6 +15,8 @@ let auth = {
 				});
 			}
 		
+			req.user = user;
+			req.token = token;
 			next();
 		} catch (error) {
 			res.status(400).json({
@@ -25,15 +27,11 @@ let auth = {
 	
 	user_type: async (req, res, next) => {
 		try {
-			const token = req.header('Authorization').replace('Bearer ', '');
-			const decoded = jwt.verify(token, process.env.KEY);
-			const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
-
-			if(user.userType === "INSTRUCTOR") {
+			if(req.user.userType === "INSTRUCTOR") {
 				next();
 			} else {
-				res.status(401).send({
-					message: 'Please Authenticate 1'
+				res.status(403).send({
+					message: 'Not an Instructor'
 				});
 			}
 		} catch (error) {
